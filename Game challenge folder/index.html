@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess Me Right</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    
+    <div class="quiz-container">
+      <h2 class="text-pop-up-to" >Guess Me Right And Win A Price</h2>
+      <div    id="questions" class="questions"></div>
+      <div  id="options"   class="options"></div>
+      <button id="nextButton" class="nextButton">Next Question</button>
+
+
+    </div>
+  </main>
+
+ 
+ <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Your quiz code here
+    // ...
+    const questions = [
+    {
+        question: "What is the capital of France?",
+        options: ["Paris", "London", "Berlin", "Madrid"],
+        correctIndex: 0
+    },
+    {
+        question: "Which planet is known as the 'Red Planet'?",
+        options: ["Earth", "Mars", "Jupiter", "Venus"],
+        correctIndex: 1
+    }
+    // Add more questions here
+];
+
+let currentQuestionIndex = 0;
+
+const questionElement = document.getElementById("question");
+const optionsElement = document.getElementById("options");
+const nextButton = document.getElementById("nextButton");
+
+function loadQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+
+    optionsElement.innerHTML = "";
+    currentQuestion.options.forEach((option, index) => {
+        const label = document.createElement("label");
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "option";
+        radio.value = index;
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(option));
+        optionsElement.appendChild(label);
+    });
+}
+
+function checkAnswer() {
+    const selectedOption = document.querySelector("input[name='option']:checked");
+    if (!selectedOption) return;
+
+    const selectedAnswer = parseInt(selectedOption.value);
+    const correctAnswer = questions[currentQuestionIndex].correctIndex;
+
+    switch (selectedAnswer) {
+        case correctAnswer:
+            alert("Correct!");
+            break;
+        default:
+            alert("Wrong. The correct answer is: " + questions[currentQuestionIndex].options[correctAnswer]);
+    }
+
+    nextButton.disabled = false;
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+        nextButton.disabled = true;
+    } else {
+        alert("Quiz completed!");
+        nextButton.disabled = true;
+    }
+}
+
+loadQuestion();
+nextButton.addEventListener("click", nextQuestion);
+optionsElement.addEventListener("change", checkAnswer);
+});
+</script>
+
+ 
+
+
+</body>
+</html>
